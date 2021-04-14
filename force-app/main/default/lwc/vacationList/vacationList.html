@@ -1,0 +1,119 @@
+<template>
+    <div class="c-container" style="width: 100%; background: #fff; padding: 10px;">
+        <lightning-layout horizontal-align="space">
+            <lightning-layout-item padding="around-small">
+                <b><p style="font-size: 1.4rem;">Vacation Requests</p></b>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <lightning-layout pull-to-boundary="medium" vertical-align="center">
+            <lightning-layout-item padding="around-large" flexibility="auto">
+                <lightning-input name="viewOnlyMyCheckBox" type="checkbox" label="View only my" onchange={handleOnlyMy}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-large">
+                <lightning-button variant="brand" label="New Request" title="Primary action" onclick={handleOpenModal} class="slds-m-left_x-small"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <ul class="slds-has-dividers_around-space" >
+
+            <template for:each={vacationRequests} for:item="vR">
+                <template if:true={vR.statusNew}>
+                    <li class="slds-item" key={vR.e.Id} style="background: #e8f6ff;">
+                        <lightning-layout
+                            vertical-align="center"
+                        >
+                            <lightning-layout-item  flexibility="auto">
+                                {vR.e.CreatedBy.Name} <b>{vR.e.RequestType__c}</b> {vR.e.StartDate__c} - {vR.e.EndDate__c} (<u>{vR.e.WorkingDays__c} days</u>) {vR.e.Manager__r.Name}
+                            </lightning-layout-item>
+                            
+                            <lightning-layout-item >
+                                <lightning-button name={vR.e.Id} onclick={handleSubmit} variant="success" label="Submit" title="Submit action" class="slds-m-left_x-small"></lightning-button>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item >
+                                <lightning-button name={vR.e.Id} onclick={handleRemove} variant="destructive" label="Remove" title="Remove action" class="slds-m-left_x-small"></lightning-button>
+                            </lightning-layout-item>
+
+
+                        </lightning-layout>
+                    </li>
+                </template>
+                <template if:true={vR.statusSubmitted}>
+                    <li class="slds-item" key={vR.e.Id} style="background: #fffec1;">
+                        <lightning-layout
+                            vertical-align="center"
+                        >
+                            <lightning-layout-item  flexibility="auto">
+                                {vR.e.CreatedBy.Name} <b>{vR.e.RequestType__c}</b> {vR.e.StartDate__c} - {vR.e.EndDate__c} (<u>{vR.e.WorkingDays__c} days</u>) {vR.e.Manager__r.Name}
+                            </lightning-layout-item>
+
+                            <lightning-layout-item >
+                                <lightning-button variant="brand" name={vR.e.Id} onclick={handleApprove} label="Approve" title="Auto action" class="slds-m-left_x-small"></lightning-button>
+                            </lightning-layout-item>
+
+                        </lightning-layout>
+                    </li>
+                </template>
+
+                <template if:true={vR.statusApproved}>
+                    <li class="slds-item" key={vR.e.Id} style="background: #bbff8b;">
+                        <lightning-layout
+                            vertical-align="center"
+                        >
+                            <lightning-layout-item  flexibility="auto">
+                                {vR.e.CreatedBy.Name} <b>{vR.e.RequestType__c}</b> {vR.e.StartDate__c} - {vR.e.EndDate__c} (<u>{vR.e.WorkingDays__c} days</u>) {vR.e.Manager__r.Name}
+                            </lightning-layout-item>
+
+                        </lightning-layout>
+                    </li>
+                </template> 
+            </template>
+        </ul>
+    </div>
+
+    <div if:true={openModal}>
+
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                  <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                  </svg>
+                  <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New request</h2>
+              </header>
+              <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="select-01">Request type</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select class="slds-select" id="typeInput" name="typeInput" onchange={onModalItemsChange}>
+                            <option value="">Select…</option>
+                            <option value="Vacation">Vacation</option>
+                            <option value="Sick">Sick</option>
+                            <option value="Unpaid">Unpaid</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <lightning-input type="date" name="dateInput1" onchange={onModalItemsChange} label="Start date" ></lightning-input>
+                <lightning-input type="date" name="dateInput2" onchange={onModalItemsChange} label="End date" style="margin-bottom: 20px;"></lightning-input>
+
+                <lightning-button variant="brand-outline" label="Create" title="Primary action with lighter look" onclick={handleCreate} class="slds-align_absolute-center"></lightning-button>
+
+                <template if:true={error}>
+                    <div>{error}</div>
+                </template>
+              </div>
+              <footer class="slds-modal__footer">
+                <button onclick={handleCloseModal} class="slds-button slds-button_neutral">Cancel</button>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </div> 
+</template>
