@@ -34,8 +34,6 @@
                             <lightning-layout-item >
                                 <lightning-button name={vR.e.Id} onclick={handleRemove} variant="destructive" label="Remove" title="Remove action" class="slds-m-left_x-small"></lightning-button>
                             </lightning-layout-item>
-
-
                         </lightning-layout>
                     </li>
                 </template>
@@ -51,7 +49,6 @@
                             <lightning-layout-item >
                                 <lightning-button variant="brand" name={vR.e.Id} onclick={handleApprove} label="Approve" title="Auto action" class="slds-m-left_x-small"></lightning-button>
                             </lightning-layout-item>
-
                         </lightning-layout>
                     </li>
                 </template>
@@ -64,7 +61,6 @@
                             <lightning-layout-item  flexibility="auto">
                                 {vR.e.CreatedBy.Name} <b>{vR.e.RequestType__c}</b> {vR.e.StartDate__c} - {vR.e.EndDate__c} (<u>{vR.e.WorkingDays__c} days</u>) {vR.e.Manager__r.Name}
                             </lightning-layout-item>
-
                         </lightning-layout>
                     </li>
                 </template> 

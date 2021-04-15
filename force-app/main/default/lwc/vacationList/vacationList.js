@@ -41,6 +41,18 @@ export default class VacationList extends LightningElement {
 
     handleCreate(){
 
+        var allowCreate = Object.keys(this.modalItemsValues).length == 3 ? true : false;
+
+        if (!allowCreate){
+            this._title = "Error!";
+            this._message = 'All fields are required!';
+            this._variant = 'error';
+
+            this.showNotification();
+
+            return null;
+        }
+
         if(this.currentUser.hasOwnProperty('Manager')){
 
 
@@ -62,6 +74,8 @@ export default class VacationList extends LightningElement {
             this._variant = 'success';
 
             this.showNotification();
+
+            this.modalItemsValues = {};
         }
         else{
             this.openModal = false;
