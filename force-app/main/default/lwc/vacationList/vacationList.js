@@ -19,6 +19,7 @@ export default class VacationList extends LightningElement {
     @track currentUser;
     @track data;
     @track onlyMyToggler;
+
     _title = 'Success!';
     _message = 'Request successfully created!';
     _variant = 'success';
@@ -35,10 +36,14 @@ export default class VacationList extends LightningElement {
             });
 
         this.loadVacationRequests();
+
     }
 
     handleCreate(){
-        try{
+
+        if(this.currentUser.hasOwnProperty('Manager')){
+
+
             addVacationRequest({type: this.modalItemsValues['typeInput'], sDate: this.modalItemsValues['dateInput1'], eDate: this.modalItemsValues['dateInput2'], user: this.currentUser})
                 .then(results => {
                     this.data = results;
@@ -58,7 +63,7 @@ export default class VacationList extends LightningElement {
 
             this.showNotification();
         }
-        catch{
+        else{
             this.openModal = false;
 
             this._title = "Error!";
@@ -90,7 +95,7 @@ export default class VacationList extends LightningElement {
                 })
                 .error(error => {
                     this.error = error;
-                }) 
+                })
         }
         else{
             this._title = "Error!";
