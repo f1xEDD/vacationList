@@ -21,7 +21,7 @@ public with sharing class vacationListController {
     public static void approveVacationRequest(String idToApprove){
         Vacation_Request__c vacationRequest= [SELECT Id, CreatedBy.Name, CreatedBy.Id,  Name, Manager__r.Name, StartDate__c, RequestType__c, Manager__c, EndDate__c, WorkingDays__c, Status__c 
                 FROM Vacation_Request__c
-                WHERE CreatedBy.Id =: UserInfo.getUserId() and Id=: idToApprove];
+                WHERE Id=: idToApprove];
 
         vacationRequest.Status__c = 'Approved';
         

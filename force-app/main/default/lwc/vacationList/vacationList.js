@@ -164,7 +164,7 @@ export default class VacationList extends LightningElement {
 
                 this.vacationRequests = mapResult;
 
-                console.log(this.vacationRequests);
+                //console.log(this.vacationRequests);
             })
             .catch(error => {
                 this.error = error;
